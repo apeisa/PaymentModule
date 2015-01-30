@@ -15,7 +15,7 @@ abstract class PaymentModule extends WireData {
    * Process the payment
    * @return bool true|false depending if the payment was successful
    */
-	public function processPayment() {
+  public function processPayment() {
 
   }
 
@@ -23,7 +23,7 @@ abstract class PaymentModule extends WireData {
    * Set the payment amount in cents. So one dollar would be 100
    * @param int $amount in cents
    */
-	public function setAmount($amount) {
+  public function setAmount($amount) {
     $this->amount = $amount;
   }
   
@@ -102,11 +102,11 @@ abstract class PaymentModule extends WireData {
 }
 
 interface PaymentModuleEmbed {
-	/* Embed method returns string containing the embed html (usually <script> tag or like) */
-	public function embed();
+  /* Embed method returns string containing the embed html (usually <script> tag or like) */
+  public function embed();
 }
 
 interface PaymentModuleRedirect {
-	/* Redirect method makes the actual redirect */
-	public function redirect();
+  /* Redirect method makes the actual redirect */
+  public function redirect();
 }
