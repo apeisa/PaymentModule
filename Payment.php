@@ -1,6 +1,6 @@
 <?php
 
-abstract class PaymentModule extends WireData {
+abstract class PaymentModule extends WireData implements Module, ConfigurableModule {
 
   protected $amount = 0;
   protected $currency = '';
