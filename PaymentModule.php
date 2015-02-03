@@ -4,12 +4,20 @@ abstract class PaymentModule extends WireData implements Module, ConfigurableMod
 
   protected $amount = 0;
   protected $currency = '';
+
   protected $processUrl = '';
-  protected $successUrl = '';
+  protected $notifyUrl = '';
   protected $failureUrl = '';
   protected $cancelUrl = '';
+  
   protected $failureReason = '';
-  protected $customerEmail = '';
+
+  protected $customer;
+  protected $products;
+
+  public function __construct() {
+    $this->products = new WireArray();
+  }
 
   /**
    * Process the payment
@@ -84,12 +92,12 @@ abstract class PaymentModule extends WireData implements Module, ConfigurableMod
     return $this->failureReason;
   }
 
-  /**
-   * Set the customers email
-   * @param string $email 
-   */
-  public function setCustomerEmail($email) {
-    $this->customerEmail = $email;
+  public function setCustomer(WireData $customer) {
+    $this->customer = $customer;
+  }
+
+  public function addProduct(WireData $product) {
+    $this->products->add($product);
   }
 
   /**
