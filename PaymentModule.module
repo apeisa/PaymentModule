@@ -150,16 +150,8 @@ class PaymentModule extends WireData implements Module, ConfigurableModule {
 
   }
 
+  public function render() {
+    
+  }
 
-}
-
-
-interface PaymentModuleEmbed {
-  /* Embed method returns string containing the embed html (usually <script> tag or like) */
-  public function embed();
-}
-
-interface PaymentModuleRedirect {
-  /* Redirect method makes the actual redirect */
-  public function redirect();
 }
