@@ -1,0 +1,12 @@
+<?php
+
+class PaymentCustomer extends WireData {
+  
+  public $givenName;
+  public $familyName;
+  public $streetAddress;
+  public $locality;
+  public $postalCode;
+  public $email;
+
+}

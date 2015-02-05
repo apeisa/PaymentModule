@@ -1,0 +1,165 @@
+<?php
+
+require_once(__DIR__ . DIRECTORY_SEPARATOR . 'PaymentCustomer.php');
+require_once(__DIR__ . DIRECTORY_SEPARATOR . 'PaymentProduct.php');
+
+class PaymentModule extends WireData implements Module, ConfigurableModule {
+
+  public static function getModuleInfo() {
+    return array(
+      'title' => 'PaymentModule', 
+      'version' => 001, 
+      'summary' => 'Base module for Payment modules to implement',
+      'singular' => false,
+      );
+  }
+
+  protected $id;
+  protected $currency = '';
+
+  protected $processUrl = '';
+  protected $notifyUrl = '';
+  protected $failureUrl = '';
+  protected $cancelUrl = '';
+  
+  protected $failureReason = '';
+
+  protected $customer;
+  protected $products;
+
+  public function __construct() {
+    $this->products = new WireArray();
+  }
+
+  /**
+   * Process the payment
+   * @return bool true|false depending if the payment was successful
+   */
+  public function processPayment() {
+
+  }
+
+  
+  /**
+   * Set numeric id for the payment. Usually order id. Some value required, since used to verify the payment.
+   * @param integer $desc 
+   */
+  public function setId($id) {
+    $id = (int) $id;
+    if ($id < 1) throw new WireException("ID is not valid");
+    $this->id = $id;
+  }
+
+  /**
+   * Set currency code for the payment in uppercase
+   * @param string $currency ie. USD|EUR
+   */
+  public function setCurrency($currency) {
+    $this->currency = $currency;
+  }
+
+  /**
+   * Set the url, where payment will be processed. This will be the url where you will load this same 
+   * module and call $payment->processPayment()
+   * @param string $url 
+   */
+  public function setProcessUrl($url) {
+    $this->processUrl = $url;
+  }
+
+  /**
+   * Set the url where payment processor redirects user if payment fails.
+   * @param string $url 
+   */
+  public function setFailureUrl($url) {
+    $this->failureUrl = $url;
+  }
+
+  /**
+   * Set the url where payment processor redirects user if user cancelles the payment. Usually same as failureUrl
+   * @param string $url 
+   */
+  public function setCancelUrl($url) {
+    $this->cancelUrl = $url;
+  }
+
+  /**
+   * Set the reason of failure
+   * @param string $string 
+   */
+  public function setFailureReason($string) {
+    $this->failureReason = $string;
+  }
+
+  /**
+   * Returns the reason of failure
+   * @return string
+   */
+  public function getFailureReason() {
+    return $this->failureReason;
+  }
+
+  public function setCustomerData(Array $customerData) {
+    $this->customer = new PaymentCustomer();
+    foreach ($customerData as $key => $value) {
+      $this->customer->$key = $value;
+    }
+  }
+
+  public function addProduct($title, $price, $quantity) {
+    $product = new PaymentProduct($title, $price, $quantity);
+    $this->products->add($product);
+  }
+
+  public function getTotalAmount() {
+    $total = 0;
+    foreach ($this->products as $product) {
+      $total = $total + $product->total;
+    }
+    return $total;
+  }
+
+  /**
+   * Returns the client friendly title for the payment
+   * @return string
+   */
+  public function getTitle()  {
+
+  }
+
+  public static function getModuleConfigInputfields(array $data) {
+    $inputfields = new InputfieldWrapper();
+
+    $field = wire('modules')->get("InputfieldAsmSelect");
+    $field->name = "paymentModules";
+    $field->label = __("Choose active payment modules");
+    $field->required = 1;
+    if(isset($data['paymentModules'])) $field->value = $data['paymentModules'];
+
+    $paymentModules = wire('modules')->find('className^=Payment');
+    if ($paymentModules->count() < 1) return false;
+
+    
+    foreach ($paymentModules as $paymentModule) {
+      if (get_class($paymentModule) == 'PaymentModule') continue;
+      $field->addOption(get_class($paymentModule), $paymentModule->getTitle());
+    }
+
+    $inputfields->add($field);
+    return $inputfields;
+
+  }
+
+
+}
+
+
+interface PaymentModuleEmbed {
+  /* Embed method returns string containing the embed html (usually <script> tag or like) */
+  public function embed();
+}
+
+interface PaymentModuleRedirect {
+  /* Redirect method makes the actual redirect */
+  public function redirect();
+}
