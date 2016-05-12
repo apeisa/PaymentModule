@@ -106,8 +106,8 @@ class PaymentModule extends WireData implements Module, ConfigurableModule {
     }
   }
 
-  public function addProduct($title, $price, $quantity) {
-    $product = new PaymentProduct($title, $price, $quantity);
+  public function addProduct($title, $price, $quantity, $tax_percentage = null) {
+    $product = new PaymentProduct($title, $price, $quantity, $tax_percentage);
     $this->products->add($product);
   }
 
