@@ -7,6 +7,7 @@ class PaymentCustomer extends WireData {
   public $streetAddress;
   public $locality;
   public $postalCode;
+  public $country;
   public $email;
 
 }
