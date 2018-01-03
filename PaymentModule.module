@@ -7,8 +7,8 @@ class PaymentModule extends WireData implements Module, ConfigurableModule {
 
   public static function getModuleInfo() {
     return array(
-      'title' => 'PaymentModule', 
-      'version' => 001, 
+      'title' => 'PaymentModule',
+      'version' => 001,
       'summary' => 'Base module for Payment modules to implement',
       'singular' => false,
       );
@@ -21,7 +21,7 @@ class PaymentModule extends WireData implements Module, ConfigurableModule {
   protected $notifyUrl = '';
   protected $failureUrl = '';
   protected $cancelUrl = '';
-  
+
   protected $failureReason = '';
 
   protected $customer;
@@ -35,14 +35,14 @@ class PaymentModule extends WireData implements Module, ConfigurableModule {
    * Process the payment
    * @return bool true|false depending if the payment was successful
    */
-  public function processPayment() {
+  public function processPayment($metadataOb) {
 
   }
 
-  
+
   /**
    * Set numeric id for the payment. Usually order id. Some value required, since used to verify the payment.
-   * @param integer $desc 
+   * @param integer $desc
    */
   public function setId($id) {
     $id = (int) $id;
@@ -59,9 +59,9 @@ class PaymentModule extends WireData implements Module, ConfigurableModule {
   }
 
   /**
-   * Set the url, where payment will be processed. This will be the url where you will load this same 
+   * Set the url, where payment will be processed. This will be the url where you will load this same
    * module and call $payment->processPayment()
-   * @param string $url 
+   * @param string $url
    */
   public function setProcessUrl($url) {
     $this->processUrl = $url;
@@ -69,7 +69,7 @@ class PaymentModule extends WireData implements Module, ConfigurableModule {
 
   /**
    * Set the url where payment processor redirects user if payment fails.
-   * @param string $url 
+   * @param string $url
    */
   public function setFailureUrl($url) {
     $this->failureUrl = $url;
@@ -77,7 +77,7 @@ class PaymentModule extends WireData implements Module, ConfigurableModule {
 
   /**
    * Set the url where payment processor redirects user if user cancelles the payment. Usually same as failureUrl
-   * @param string $url 
+   * @param string $url
    */
   public function setCancelUrl($url) {
     $this->cancelUrl = $url;
@@ -85,7 +85,7 @@ class PaymentModule extends WireData implements Module, ConfigurableModule {
 
   /**
    * Set the reason of failure
-   * @param string $string 
+   * @param string $string
    */
   public function setFailureReason($string) {
     $this->failureReason = $string;
@@ -139,7 +139,7 @@ class PaymentModule extends WireData implements Module, ConfigurableModule {
     $paymentModules = wire('modules')->find('className^=Payment');
     if ($paymentModules->count() < 1) return false;
 
-    
+
     foreach ($paymentModules as $paymentModule) {
       if (get_class($paymentModule) == 'PaymentModule') continue;
       $field->addOption(get_class($paymentModule), $paymentModule->getTitle());
@@ -151,7 +151,7 @@ class PaymentModule extends WireData implements Module, ConfigurableModule {
   }
 
   public function render() {
-    
+
   }
 
 }
