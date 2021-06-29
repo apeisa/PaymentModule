@@ -8,7 +8,7 @@ class PaymentModule extends WireData implements Module, ConfigurableModule {
   public static function getModuleInfo() {
     return array(
       'title' => 'PaymentModule', 
-      'version' => 1.0.0, 
+      'version' => '1.0.1', 
       'summary' => 'Base module for Payment modules to implement',
       'singular' => false,
       );
