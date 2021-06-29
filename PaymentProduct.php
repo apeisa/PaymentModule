@@ -1,4 +1,4 @@
-<?php
+<?php namespace ProcessWire;
 
 class PaymentProduct extends WireData {
   public function __construct($title, $amount, $quantity = 1, $tax_percentage = null, $id = null) {
