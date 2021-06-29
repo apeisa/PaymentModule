@@ -1,0 +1,21 @@
+{
+    "name": "apeisa/paymentmodule",
+    "type": "pw-module",
+    "description": "Parent module for all payment modules",
+    "keywords": [
+        "module",
+        "processwire"
+    ],
+    "license": "GPL-2.0-or-later",
+    "authors": [
+        {
+            "name": "apeisa",
+            "homepage": "https://github.com/apeisa"
+        }
+    ],
+    "require": {
+        "php": ">=7.1",
+        "processwire/processwire": ">=3.0.0",
+        "wireframe-framework/processwire-composer-installer": "^1.0.0"
+    }
+}
